@@ -47,7 +47,7 @@ viet-nom-cct/
 └── requirements.txt
 ```
 
-## 3. Định dạng dữ liệu THẬT (bắt buộc tuân theo khi bạn nạp ngữ liệu)
+## 3. Định dạng dữ liệu THẬT
 
 Đặt vào `data/raw/han/` (và tương tự `data/raw/nom/`) ba file:
 
