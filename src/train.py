@@ -1,4 +1,4 @@
-"""Vòng lặp huấn luyện cho CCT-C, CCT-D và Transformer cơ sở (Bảng 4.3).
+"""Vòng lặp huấn luyện cho CCT-C, CCT-D và Transformer cơ sở (baseline) .
 
 Cách dùng:
     python -m src.train --config configs/default.yaml --script han --model_type cct_c

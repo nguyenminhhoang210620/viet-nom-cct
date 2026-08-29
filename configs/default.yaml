@@ -1,21 +1,18 @@
-# Cấu hình mặc định, khớp Bảng 4.2 / 4.3 trong báo cáo tham khảo
-# (25D2KLTTNT03_BaoCao.pdf — Tống Trọng Tâm, 2026).
-# Sửa lại các đường dẫn/siêu tham số tuỳ nhu cầu; đây chỉ là điểm khởi đầu.
 
-# --- Hệ chữ đang xử lý: "han" hoặc "nom" (mỗi hệ một mô hình riêng, Mục 4.1.3) ---
+# Hệ chữ đang xử lý: "han" hoặc "nom" 
 script: nom
 
-# --- Đường dẫn dữ liệu thô (đầu vào của scripts/prepare_data) ---
-raw_dir: data/raw/nom          # đổi thành data/raw/nom khi xử lý chữ Nôm
+# Đường dẫn dữ liệu thô (đầu vào của scripts/prepare_data)
+raw_dir: data/raw/nom         
 processed_dir: data/processed/nom
 checkpoint_dir: checkpoints/nom
 
-# --- Chia tập (Mục 4.1.1) ---
+# Chia tập
 split_ratios: [0.8, 0.1, 0.1]   # train, dev, test
 split_seed: 42
 length_bins: 10                  # số bin độ dài dùng để chia phân tầng
 
-# --- Kiến trúc bộ mã hoá BERT (dùng chung CCT-C và CCT-D, Bảng 4.2) ---
+# Kiến trúc bộ mã hoá BERT (dùng chung CCT-C và CCT-D, Bảng 4.2)
 encoder:
   d_model: 256
   n_layers: 6
@@ -24,7 +21,7 @@ encoder:
   dropout: 0.1
   max_len: 128
 
-# --- Bộ giải mã CCT-D (Bảng 4.2) ---
+# Bộ giải mã CCT-D (Bảng 4.2) 
 decoder:
   n_layers: 6
   n_heads: 8
@@ -32,12 +29,12 @@ decoder:
   dropout: 0.1
   beam_size: 5
 
-# --- CCT-C: kích thước tầng ẩn MLP (Mục 3.5.1, dùng lại d_model) ---
+# CCT-C: kích thước tầng ẩn MLP (Mục 3.5.1, dùng lại d_model)
 cct_c:
   hidden_dim: 256
   dropout: 0.1
 
-# --- Baseline Transformer cơ sở (Mục 4.3.1/4.3.2, cùng quy mô kiến trúc) ---
+# Baseline Transformer cơ sở (Mục 4.3.1/4.3.2, cùng quy mô kiến trúc)
 baseline:
   d_model: 256
   n_layers: 6
@@ -47,7 +44,7 @@ baseline:
   label_smoothing: 0.1
   beam_size: 5
 
-# --- Huấn luyện CCT-C / CCT-D (cột trái Bảng 4.3) ---
+#  Huấn luyện CCT-C / CCT-D (Bảng 4.3) 
 train_cct:
   optimizer: adamw
   lr: 5.0e-4
@@ -63,7 +60,7 @@ train_cct:
   amp_dtype: bf16                # đổi thành fp16 nếu GPU không hỗ trợ bf16
   eval_every_steps: 500
 
-# --- Huấn luyện Transformer cơ sở (cột phải Bảng 4.3) ---
+#  Huấn luyện Transformer cơ sở (Bảng 4.3) 
 train_baseline:
   optimizer: adam
   lr: 5.0e-4
@@ -76,7 +73,7 @@ train_baseline:
   grad_clip: null
   amp_dtype: fp16
 
-# --- Cụm từ cố định (tuỳ chọn, Mục 3.3.2 — báo cáo cho thấy hiệu quả nhỏ/không ổn định) ---
+#  Cụm từ cố định (tuỳ chọn, Mục 3.3.2 — báo cáo cho thấy hiệu quả nhỏ/không ổn định) ---
 phrase_table:
   enabled: false
   mode: none                     # none | integrated | postprocess
