@@ -6,11 +6,7 @@ dịch máy hai chiều giữa chữ Hán Nôm và chữ Quốc ngữ"* (Tống 
 
 Đây là **bài toán chuyển tự (transliteration/dịch âm)**, không phải dịch nghĩa: mục tiêu là bảo
 toàn cách đọc khi chuyển đổi giữa tự dạng Hán/Nôm và chữ Quốc ngữ, không sinh ra một bản dịch nghĩa
-sang tiếng Việt hiện đại. Xem `skill.md` (đã lưu vào tài khoản của bạn) để biết chi tiết phương pháp.
-
-> ⚠️ **Chưa có ngữ liệu thật.** Repo này đi kèm bộ dữ liệu giả lập nhỏ (`data/sample/`) chỉ để
-> chạy thử toàn bộ pipeline. Khi có ngữ liệu thật từ Trung tâm Ngôn ngữ học Tính toán, đặt vào
-> `data/raw/han/` và `data/raw/nom/` đúng định dạng ở dưới rồi chạy lại `prepare_data.py`.
+sang tiếng Việt hiện đại.
 
 ## 1. Cài đặt
 
@@ -19,16 +15,16 @@ micromamba create --name nlp python=3.11 pip -y
 pip install -r requirements.txt
 ```
 
-Khuyến nghị chạy huấn luyện trên GPU (báo cáo dùng Google Colab A100 40GB). CPU chỉ đủ để
+Khuyến nghị chạy huấn luyện trên GPU (báo cáo dùng Kaggle Colab GPU T4x2). CPU chỉ đủ để
 smoke-test với dữ liệu mẫu.
 
 ## 2. Cấu trúc thư mục
 
 ```
 viet-nom-cct/
-├── configs/default.yaml       # siêu tham số, khớp Bảng 4.2 / 4.3 báo cáo
+├── configs/default.yaml       # siêu tham số, tham khảo Bảng 4.2 / 4.3 báo cáo
 ├── data/
-│   ├── raw/{han,nom}/         # <-- đặt ngữ liệu THẬT vào đây (xem định dạng bên dưới)
+│   ├── raw/{han,nom}/         #  đặt ngữ liệu THẬT vào đây (xem định dạng bên dưới)
 │   ├── sample/{han,nom}/      # dữ liệu giả lập để chạy thử (do make_sample_data.py sinh ra)
 │   └── processed/             # output của prepare_data.py: vocab, candidates, splits
 ├── src/
@@ -62,15 +58,14 @@ Mỗi dòng: `câu_quốc_ngữ<TAB>câu_hán_nôm`
 - Câu Quốc ngữ: các âm tiết cách nhau **một khoảng trắng**.
 - Câu Hán/Nôm: các ký tự viết liền nhau (không khoảng trắng) — mỗi ký tự Unicode là một token.
 - Hai câu **phải có cùng số đơn vị** sau khi tách token (âm tiết ↔ ký tự theo đúng thứ tự,
-  Mục 2.1.4). Cặp nào lệch số lượng sẽ tự động bị loại ở bước tiền xử lý — đây là hành vi đúng
-  theo báo cáo, không phải lỗi.
+  Mục 2.1.4). Cặp nào lệch số lượng sẽ tự động bị loại ở bước tiền xử lý.
 
 ```
 nam quốc sơn hà nam đế cư	南國山河南帝居
 tiệt nhiên định phận tại thiên thư	截然定分在天書
 ```
 
-### `dict.tsv` — từ điển Hán Việt / Nôm–Quốc ngữ (bắt buộc, dùng mở rộng tập ứng viên)
+### `dict.tsv` — tự điển Hán Việt / Nôm–Quốc ngữ (bắt buộc, dùng mở rộng tập ứng viên)
 
 Mỗi dòng: `ký_tự_hán_nôm<TAB>âm_đọc_quốc_ngữ`
 
@@ -95,9 +90,9 @@ sơn_hà	山河
 ```
 
 Chỉ dùng khi `phrase_table.enabled: true` trong config — báo cáo ghi nhận phần này cải thiện rất
-nhỏ và chưa ổn định (Mục 4.4.3), nên không phải ưu tiên.
+nhỏ và chưa ổn định (Mục 4.4.3), nên không phải ưu tiên - và hiện repo này không có dạng data này.
 
-## 4. Chạy thử với dữ liệu giả lập (trước khi có ngữ liệu thật)
+## 4. Chạy thử với dữ liệu giả lập 
 
 ```bash
 bash scripts/run_demo.sh
@@ -108,7 +103,7 @@ CPU → đánh giá BLEU/token-accuracy → chuyển tự thử một câu. Mụ
 đúng logic, **không phản ánh chất lượng thật** (dữ liệu giả lập rất nhỏ và không phải ngữ liệu
 Hán Nôm thực).
 
-## 5. Chạy với dữ liệu thật trên GPU/Colab
+## 5. Chạy với dữ liệu thật trên GPU/Kaggle
 
 ```bash
 # 1. Đặt parallel.tsv, dict.tsv (và phrases.tsv nếu dùng) vào data/raw/han/ và data/raw/nom/
